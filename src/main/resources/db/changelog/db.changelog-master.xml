@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="CreateSiteTable" author="Emil">
+        <createTable tableName="site">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status" type="ENUM('INDEXING', 'INDEXED', 'FAILED')">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_time" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_error" type="TEXT"/>
+            <column name="url" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="CreatePageTable" author="Emil">
+        <createTable tableName="page">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="site_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="path" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="MEDIUMTEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="page"
+                                 baseColumnNames="site_id"
+                                 constraintName="fk_page_site"
+                                 referencedTableName="site"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+        <sql>
+            CREATE INDEX idx_path ON page (path(255));
+        </sql>
+    </changeSet>
+
+    <changeSet id="CreateLemmaTable" author="Emil">
+        <createTable tableName="lemma">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="site_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lemma" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="frequency" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="lemma"
+                                 baseColumnNames="site_id"
+                                 constraintName="fk_lemma_site"
+                                 referencedTableName="site"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="CreateIndexTable" author="Emil">
+        <createTable tableName="search_index">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="page_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lemma_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rank" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="search_index"
+                                 baseColumnNames="page_id"
+                                 constraintName="fk_search_index_page"
+                                 referencedTableName="page"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="search_index"
+                                 baseColumnNames="lemma_id"
+                                 constraintName="fk_search_index_lemma"
+                                 referencedTableName="lemma"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>
