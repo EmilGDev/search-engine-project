@@ -1,0 +1,36 @@
+# example values
+indexing-settings:
+  user-agent: "Mozilla/5.0 (compatible; HeliontSearchBot/1.0)"
+  referrer: "http://www.google.com"
+  sites:
+    - url: https://volochek.life
+      name: Вышний Волочек
+    - url: https://dimonvideo.ru
+      name: Dimonvideo
+    - url: https://www.playback.ru
+      name: PlayBack.Ru
+
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: root
+    password: Password123
+    url: jdbc:mysql://localhost:3306/search_engine?useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    drop-first: true # после запуска приложения меняем на false, чтоб таблицы больше не пересоздавались
+
+
+

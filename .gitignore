@@ -1,0 +1,52 @@
+/target/
+
+
+/.mvn/
+!.mvn/wrapper/maven-wrapper.jar
+
+
+.DS_Store
+Thumbs.db
+
+# Eclipse specific files
+*.classpath
+*.project
+*.settings/
+
+# Intellij specific files
+.idea/
+*.iml
+*.iws
+
+# NetBeans specific files
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code settings
+.vscode/
+
+# Temporary files
+*.tmp
+*.swp
+
+# Logs and temp files
+*.log
+*.pid
+
+
+docker-compose.override.yml
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Lombok config
+.lombok/
+
+# Java build
+/bin/
+/out/
